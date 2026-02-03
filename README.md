@@ -1,7 +1,11 @@
 ## Bookstore Application - Spring + Angular
 Aggiornamento della web app Bookstore.
+```bash
+   https://github.com/Orsola99/bookstore.git
+   ```
 
 L'applicazione Bookstore è un sistema completo per la gestione di una libreria, sviluppato utilizzando Spring Boot per il backend e Angular per il frontend. Questa applicazione consente agli utenti di visualizzare i libri dal catalogo della libreria ed aggiungerli al carrello e proseguire all'acquisto.
+
 
 
 ## Prerequisiti
@@ -19,7 +23,7 @@ L'applicazione Bookstore è un sistema completo per la gestione di una libreria,
    ```
 
 ### 2. **Modifica del file (application.properties**)
-   > Dopo aver clonato il progetto, apri il file `src/main/resources/application.properties` e aggiorna i valori con le tue credenziali locali (nome del database, utente, password, ecc.).
+   > Dopo aver clonato il progetto, apri il file `bookstore-be/src/main/resources/application.properties` e aggiorna i valori con le tue credenziali locali (nome del database, utente, password, ecc.).
 
 ### 3. **Esegui il database PostgreSQL**  
    Assicurati che il tuo server PostgreSQL sia in esecuzione e che il database specificato nel file `application.properties` sia stato creato.
@@ -37,7 +41,7 @@ L'applicazione Bookstore è un sistema completo per la gestione di una libreria,
    `http://localhost:8080/swagger-ui.html`
 
 ### 2. **Avvia il frontend Angular**
-   
+   **La parte di frontend è stata sviluppata grazie al supporto di alcuni colleghi**
 
    Apri un nuovo terminale, naviga nella cartella `frontend` e esegui:
    ```bash
@@ -57,3 +61,7 @@ L'applicazione Bookstore è un sistema completo per la gestione di una libreria,
 - **Frontend**: Angular, TypeScript, HTML, CSS
 - **Strumenti di build**: Maven, npm
 - **Documentazione API**: Swagger
+
+## Prossimi sviluppi
+- **Modifica dati personali dal profilo utente**
+- **Modifica password dal profilo utente**
