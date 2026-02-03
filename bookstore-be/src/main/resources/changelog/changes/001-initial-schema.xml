@@ -1,0 +1,168 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="V.Aprea (generated)" id="1746784487759-1">
+        <createTable tableName="utenti">
+            <column autoIncrement="true" name="idutente" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="utenti_pkey"/>
+            </column>
+            <column name="cognome" type="VARCHAR(255)"/>
+            <column name="nome" type="VARCHAR(255)"/>
+            <column name="codicefiscale" type="VARCHAR(32)"/>
+            <column name="partitaiva" type="VARCHAR(32)"/>
+            <column name="mail" type="VARCHAR(128)"/>
+            <column name="username" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="userpass" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="privacy" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-2">
+        <createTable tableName="indirizzi">
+            <column autoIncrement="true" name="idindirizzo" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="indirizzi_pkey"/>
+            </column>
+            <column name="idutente" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="tipo" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="via" type="VARCHAR(128)"/>
+            <column name="cap" type="VARCHAR(16)"/>
+            <column name="citta" type="VARCHAR(256)"/>
+            <column name="provincia" type="VARCHAR(2)"/>
+            <column name="nazione" type="VARCHAR(64)"/>
+            <column name="telefono" type="VARCHAR(32)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-3">
+        <createTable tableName="prodotti">
+            <column autoIncrement="true" name="idprodotto" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="prodotti_pkey"/>
+            </column>
+            <column name="titolo" type="VARCHAR(1024)"/>
+            <column name="sottotitolo" type="VARCHAR(1024)"/>
+            <column name="descrizione" type="TEXT"/>
+            <column defaultValueNumeric="0.0" name="prezzo" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="aliquota" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nomefile" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-4">
+        <createTable tableName="carrelli">
+            <column autoIncrement="true" name="idcarrello" startWith="9" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="carrelli_pkey"/>
+            </column>
+            <column defaultValueNumeric="0" name="idutente" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="date"/>
+            <column defaultValueNumeric="0" name="status" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-5">
+        <createTable tableName="carrellodettagli">
+            <column autoIncrement="true" name="idcarrellodettagli" startWith="14" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="carrellodettagli_pkey"/>
+            </column>
+            <column name="idcarrello" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="idprodotto" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantita" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="prezzo" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="aliquota" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-6">
+        <createTable tableName="ordini">
+            <column autoIncrement="true" name="idordine" startWith="6" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ordini_pkey"/>
+            </column>
+            <column name="idutente" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataordine" type="date"/>
+            <column defaultValueNumeric="0" name="statoordine" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="idindirizzofatturazione" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="idindirizzospedizione" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dataspedizione" type="date"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-7">
+        <createTable tableName="ordinidettagli">
+            <column autoIncrement="true" name="iddettaglio" startWith="7" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ordinidettagli_pkey"/>
+            </column>
+            <column name="idordine" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="idprodotto" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantita" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="prezzo" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="aliquota" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-8">
+        <addForeignKeyConstraint baseColumnNames="idutente" baseTableName="carrelli" constraintName="carrelli_idutente_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idutente" referencedTableName="utenti" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-9">
+        <addForeignKeyConstraint baseColumnNames="idcarrello" baseTableName="carrellodettagli" constraintName="carrellodettagli_idcarrello_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idcarrello" referencedTableName="carrelli" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-10">
+        <addForeignKeyConstraint baseColumnNames="idprodotto" baseTableName="carrellodettagli" constraintName="carrellodettagli_idprodotto_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idprodotto" referencedTableName="prodotti" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-11">
+        <addForeignKeyConstraint baseColumnNames="idutente" baseTableName="indirizzi" constraintName="indirizzi_idutente_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idutente" referencedTableName="utenti" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-12">
+        <addForeignKeyConstraint baseColumnNames="idindirizzofatturazione" baseTableName="ordini" constraintName="ordini_idindirizzofatturazione_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idindirizzo" referencedTableName="indirizzi" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-13">
+        <addForeignKeyConstraint baseColumnNames="idindirizzospedizione" baseTableName="ordini" constraintName="ordini_idindirizzospedizione_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idindirizzo" referencedTableName="indirizzi" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-14">
+        <addForeignKeyConstraint baseColumnNames="idutente" baseTableName="ordini" constraintName="ordini_idutente_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idutente" referencedTableName="utenti" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-15">
+        <addForeignKeyConstraint baseColumnNames="idordine" baseTableName="ordinidettagli" constraintName="ordinidettagli_idordine_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idordine" referencedTableName="ordini" validate="true"/>
+    </changeSet>
+    <changeSet author="V.Aprea (generated)" id="1746784487759-16">
+        <addForeignKeyConstraint baseColumnNames="idprodotto" baseTableName="ordinidettagli" constraintName="ordinidettagli_idprodotto_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="idprodotto" referencedTableName="prodotti" validate="true"/>
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -1,0 +1,62 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h4 class="mb-0">Accedi al tuo account</h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Messaggio di errore -->
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                name="username"
+                [(ngModel)]="username"
+                required
+                #usernameInput="ngModel">
+              <div *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="text-danger mt-1">
+                <small *ngIf="usernameInput.errors?.['required']">Username obbligatorio</small>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                name="password"
+                [(ngModel)]="password"
+                required
+                #passwordInput="ngModel">
+              <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger mt-1">
+                <small *ngIf="passwordInput.errors?.['required']">Password obbligatoria</small>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="loginForm.invalid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Accedi
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <p class="mb-0">Non hai un account? <a routerLink="/register">Registrati</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

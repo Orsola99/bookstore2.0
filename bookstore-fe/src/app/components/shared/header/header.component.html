@@ -1,0 +1,57 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-book me-2"></i>BookStore
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/prodotti" routerLinkActive="active">Prodotti</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link position-relative" routerLink="/carrello" routerLinkActive="active">
+              <i class="bi bi-cart3 me-1"></i>Carrello
+              <span *ngIf="numeroProdottiCarrello > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ numeroProdottiCarrello }}
+                <span class="visually-hidden">prodotti nel carrello</span>
+              </span>
+            </a>
+          </li>
+          <!-- Menu utente quando è autenticato -->
+          <li class="nav-item dropdown" *ngIf="isLoggedIn">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle me-1"></i>{{ currentUser?.nome }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" routerLink="/profilo">Profilo</a></li>
+              <li><a class="dropdown-item" routerLink="/ordini">I miei ordini</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a></li>
+            </ul>
+          </li>
+          
+          <!-- Link di login e registrazione quando non è autenticato -->
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">
+              <i class="bi bi-box-arrow-in-right me-1"></i>Accedi
+            </a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link" routerLink="/register" routerLinkActive="active">
+              <i class="bi bi-person-plus me-1"></i>Registrati
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

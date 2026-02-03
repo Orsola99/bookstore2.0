@@ -1,0 +1,105 @@
+<div class="container py-5">
+  <!-- Banner principale -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="bg-primary text-white rounded p-5 text-center">
+        <h1 class="display-4">Benvenuto nel BookStore</h1>
+        <p class="lead">Scopri la nostra vasta selezione di libri e trova la tua prossima lettura preferita</p>
+        <button class="btn btn-light btn-lg mt-3" routerLink="/prodotti">Esplora il catalogo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sezione prodotti in evidenza -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="border-bottom pb-2">Prodotti in evidenza</h2>
+    </div>
+  </div>
+
+  <!-- Messaggio di errore -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center mb-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    <!-- Prodotti in evidenza dinamici -->
+    <div class="col" *ngFor="let prodotto of prodottiInEvidenza">
+      <div class="card h-100 shadow-sm">
+        <!-- Utilizziamo un percorso assoluto per le immagini -->
+        <img 
+          [src]="'/assets/images/' + prodotto.nomeFile" 
+          class="card-img-top" 
+          [alt]="prodotto.titolo"
+          style="height: 200px; object-fit: contain; padding: 10px;">
+        <div 
+          *ngIf="!prodotto.nomeFile" 
+          class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+          style="height: 200px;">
+          <i class="bi bi-book" style="font-size: 3rem;"></i>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ prodotto.titolo }}</h5>
+          <p class="card-text text-muted">{{ prodotto.sottotitolo }}</p>
+          <p class="card-text fw-bold">€{{ prodotto.prezzo.toFixed(2) }}</p>
+          <div class="d-flex justify-content-between">
+            <a [routerLink]="['/prodotto', prodotto.idProdotto]" class="btn btn-sm btn-outline-primary">Dettagli</a>
+            <button (click)="aggiungiAlCarrello(prodotto.idProdotto)" class="btn btn-sm btn-success"><i class="bi bi-cart-plus"></i> Aggiungi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaggio se non ci sono prodotti -->
+    <div *ngIf="!loading && prodottiInEvidenza.length === 0" class="col-12 text-center">
+      <p>Nessun prodotto in evidenza disponibile.</p>
+    </div>
+  </div>
+
+  <!-- Sezione categorie -->
+  <div class="row mt-5 mb-4">
+    <div class="col-12">
+      <h2 class="border-bottom pb-2">Categorie</h2>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    <div class="col">
+      <div class="card bg-light h-100">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-book-half mb-3" style="font-size: 2.5rem;"></i>
+          <h4>Romanzi</h4>
+          <p class="text-muted">Esplora la nostra collezione di romanzi</p>
+          <button class="btn btn-outline-primary">Scopri</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-light h-100">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-lightbulb mb-3" style="font-size: 2.5rem;"></i>
+          <h4>Saggistica</h4>
+          <p class="text-muted">Approfondisci con i nostri saggi</p>
+          <button class="btn btn-outline-primary">Scopri</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card bg-light h-100">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-code-square mb-3" style="font-size: 2.5rem;"></i>
+          <h4>Informatica</h4>
+          <p class="text-muted">Libri tecnici e manuali</p>
+          <button class="btn btn-outline-primary">Scopri</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

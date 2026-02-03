@@ -1,0 +1,127 @@
+<div class="container mt-4">
+  <h1 class="text-center">Dettaglio Ordine</h1>
+  
+  <!-- Messaggio di errore -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- Dettaglio ordine -->
+  <div *ngIf="!loading && ordine" class="mt-4">
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Informazioni Ordine #{{ ordine.idOrdine }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Data Ordine:</strong> {{ ordine.dataOrdine | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Data Spedizione:</strong> {{ ordine.dataSpedizione ? (ordine.dataSpedizione | date:'dd/MM/yyyy') : 'Non spedito' }}</p>
+            <p>
+              <strong>Stato:</strong> 
+              <span class="badge rounded-pill {{ getStatusClass(ordine.status) }}">
+                {{ getStatusLabel(ordine.status) }}
+              </span>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Cliente:</strong> {{ ordine.utente.nome }} {{ ordine.utente.cognome }}</p>
+            <p><strong>Email:</strong> {{ ordine.utente.email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Indirizzo di fatturazione -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Indirizzo di Fatturazione</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Via:</strong> {{ ordine.indirizzoFatturazione.via }}</p>
+            <p><strong>CAP:</strong> {{ ordine.indirizzoFatturazione.cap }}</p>
+            <p><strong>Città:</strong> {{ ordine.indirizzoFatturazione.citta }}</p>
+            <p><strong>Provincia:</strong> {{ ordine.indirizzoFatturazione.provincia }}</p>
+            <p><strong>Nazione:</strong> {{ ordine.indirizzoFatturazione.nazione }}</p>
+            <p><strong>Telefono:</strong> {{ ordine.indirizzoFatturazione.telefono }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indirizzo di spedizione -->
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Indirizzo di Spedizione</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Via:</strong> {{ ordine.indirizzoSpedizione.via }}</p>
+            <p><strong>CAP:</strong> {{ ordine.indirizzoSpedizione.cap }}</p>
+            <p><strong>Città:</strong> {{ ordine.indirizzoSpedizione.citta }}</p>
+            <p><strong>Provincia:</strong> {{ ordine.indirizzoSpedizione.provincia }}</p>
+            <p><strong>Nazione:</strong> {{ ordine.indirizzoSpedizione.nazione }}</p>
+            <p><strong>Telefono:</strong> {{ ordine.indirizzoSpedizione.telefono }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prodotti ordinati -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Prodotti Ordinati</h4>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Prodotto</th>
+                <th class="text-end">Prezzo Unitario</th>
+                <th class="text-center">Aliquota</th>
+                <th class="text-center">Quantità</th>
+                <th class="text-end">Totale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dettaglio of ordine.dettagli">
+                <td>{{ dettaglio.prodotto.titolo }}</td>
+                <td class="text-end">€ {{ dettaglio.prezzo.toFixed(2) }}</td>
+                <td class="text-center">{{ dettaglio.aliquota }}%</td>
+                <td class="text-center">{{ dettaglio.quantita }}</td>
+                <td class="text-end">€ {{ (dettaglio.prezzo * dettaglio.quantita).toFixed(2) }}</td>
+              </tr>
+              <tr class="table-active">
+                <td colspan="4" class="text-end fw-bold">Totale</td>
+                <td class="text-end fw-bold">€ {{ totale.toFixed(2) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a routerLink="/ordini" class="btn btn-primary">
+        <i class="bi bi-arrow-left"></i> Torna agli ordini
+      </a>
+    </div>
+  </div>
+
+  <!-- Ordine non trovato -->
+  <div *ngIf="!loading && !ordine" class="text-center mt-5">
+    <p>Ordine non trovato.</p>
+    <a routerLink="/ordini" class="btn btn-primary mt-3">
+      <i class="bi bi-arrow-left"></i> Torna agli ordini
+    </a>
+  </div>
+</div>

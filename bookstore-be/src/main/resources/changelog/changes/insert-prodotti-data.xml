@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="insert-prodotti-data" author="system">
+        <comment>Inserimento dati iniziali nella tabella prodotti</comment>
+
+        <!-- Prodotto 8001 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8001"/>
+            <column name="titolo" value="Beginning Jakarta EE Web Development"/>
+            <column name="descrizione">
+                <![CDATA[Comprehensive and example-driven, this book is all you need to develop dynamic Java-based web applications using JSP, connect to databases with JSF, and put them into action using the popular open source Java web server, Apache Tomcat.
+Beginning Jakarta EE Web Development is a comprehensive introduction to building Java-based web applications using JSP, JSF, MySQL, and the Apache Tomcat web application server. Other APIs including JSON, JSTL, and XML parser are covered along the way.
+Key concepts are made easy to grasp with numerous working examples and a walk-through of the development of a complete ecommerce project. This book is written for professionals by practicing Java web application professionals and experts.
+What You Will Learn
+- Build Java-based web applications using JSP and JSF with Eclipse Jakarta EE
+- Configure your database with MySQL
+- Define XML documents for your applications
+- Use the Apache MyFaces APIs to create JSF applications
+- Integrate and implement JSF and JSP together
+- Build an online ecommerce web application]]>
+            </column>
+            <column name="prezzo" valueNumeric="39.50"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Using JSP, JSF, MySQL, and Apache Tomcat for Building Java Web Applications"/>
+            <column name="nomefile" value="prod001.png"/>
+        </insert>
+
+        <!-- Prodotto 8002 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8002"/>
+            <column name="titolo" value="Hands-On Cloud-Native Microservices with Jakarta EE"/>
+            <column name="descrizione">
+                <![CDATA[Luigi Fugaro's first encounter with computers was in the early 80s when he was a kid. He started with a Commodore Vic-20, passing through a Sinclair, a Commodore 64, and an Atari ST 1040, where he spent days and nights giving breath mints to Otis. In 1998, he started his career as a webmaster doing HTML, JavaScript, Applets, and some graphics with Paint Shop Pro. He then switched to Delphi, Visual Basic, and then started working on Java projects. He has been developing all kinds of web applications, dealing with backend and frontend frameworks. In 2012, he started working for Red Hat and is now an architect in the EMEA Middleware team.
+
+He has authored WildFly Cookbook and Mastering JBoss Enterprise Application Platform 7 by Packt Publishing.
+
+Mauro Vocale was born on March 25, 1980 in Venaria Reale, Italy. He started to work in Java and Linux OS in 2001. He is a passionate open source developer, and he is excited to be working for a company like Red Hat as a middleware consultant since November 2015. He is a Certified Oracle Master Java SE 6 Developer, Oracle EJB, and Web Component Developer for JEE 6 and JBoss EAP 7 administration.
+
+As a consultant, he has the opportunity to implement enterprise applications in many different scenarios and, like many IT people, he takes big enterprise companies through the journey of digital transformation and microservices adoption.He was the official reviewer of Mastering JBoss Enterprise Application Platform 7, published by Packt Publishing.]]>
+            </column>
+            <column name="prezzo" valueNumeric="41.50"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Build scalable and reactive microservices with Docker, Kubernetes, and OpenShift"/>
+            <column name="nomefile" value="prod002.png"/>
+        </insert>
+
+        <!-- Prodotto 8003 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8003"/>
+            <column name="titolo" value="Thinking in Java."/>
+            <column name="descrizione" value=""/>
+            <column name="prezzo" valueNumeric="35.00"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Fondamenti"/>
+            <column name="nomefile" value="prod003.png"/>
+        </insert>
+
+        <!-- Prodotto 8004 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8004"/>
+            <column name="titolo" value="Introducing Jakarta EE CDI"/>
+            <column name="descrizione">
+                <![CDATA[Discover the Jakarta EE Contexts and Dependency Injection (CDI 2.0) framework which helps you write better code through the use of well-defined enterprise Java-based components and beans (EJBs). If you have ever wanted to write clean Java EE code, this short book is your best guide for doing so: you will pick up valuable tips along the way from your author's years of experience teaching and coding. Introducing Jakarta EE CDI covers CDI 2.0 in detail and equips you with the theoretical underpinnings of Java EE, now Jakarta EE.
+
+This book is packed with so much that by the end of it, you will feel confident to use your new-found knowledge to help you write better, readable, maintainable, and long-lived mission-critical software.
+What You Will Learn
+
+Write better code with the Jakarta EE Contexts and Dependency Injection (CDI) framework
+Work with the powerful, extensible, and well-defined contextual life cycle for components
+Use CDI's mechanism for decoupling application components through a typesafe event API
+Build typesafe interceptors for altering the behaviour of components at runtime
+Harness the well-defined qualifier system for easy isolation of beans
+Convert almost any valid Java type to a CDI managed bean with CDI's producer mechanism
+Who This Book Is For
+
+Experienced enterprise Java, Java EE, or J2EE developers who may be new to CDI or dependency injection]]>
+            </column>
+            <column name="prezzo" valueNumeric="29.00"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Contexts and Dependency Injection for Enterprise Java Development"/>
+            <column name="nomefile" value="prod004.png"/>
+        </insert>
+
+        <!-- Prodotto 8005 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8005"/>
+            <column name="titolo" value="Practical Domain-Driven Design in Enterprise Java"/>
+            <column name="descrizione">
+                <![CDATA[Practical Domain-Driven Design in Enterprise Java starts by building out the Cargo Tracker reference application as a monolithic application using the Jakarta EE platform. By doing so, you will map concepts of DDD (bounded contexts, language, and aggregates) to the corresponding available tools (CDI, JAX-RS, and JPA) within the Jakarta EE platform.
+
+Once you have completed the monolithic application, you will walk through the complete conversion of the monolith to a microservices-based architecture, again mapping the concepts of DDD and the corresponding available tools within the MicroProfile platform (config, discovery, and fault tolerance). To finish this section, you will examine the same microservices architecture on the Spring Boot platform.
+
+The final set of chapters looks at what the application would be like if you used the CQRS and event sourcing patterns. Here you'll use the Axon framework as the base framework.]]>
+            </column>
+            <column name="prezzo" valueNumeric="30.50"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Using Jakarta EE, Eclipse MicroProfile, Spring Boot, and the Axon Framework"/>
+            <column name="nomefile" value="prod005.png"/>
+        </insert>
+
+        <!-- Prodotto 8006 -->
+        <insert tableName="prodotti">
+            <column name="idprodotto" value="8006"/>
+            <column name="titolo" value="Architecting Modern Java EE Applications"/>
+            <column name="descrizione">
+                <![CDATA[Sebastian Daschner is a Java freelancer working as a consultant and trainer and is enthusiastic about programming and Java (EE). He participates in the JCP, helping to form future Java EE standards, serving in the JSR 370 and 374 Expert Groups, and collaborating on various open source projects. For his contributions to the Java community and ecosystem, he was recognized with the titles Java Champion and Oracle Developer Champion.
+
+Sebastian is a regular speaker at international IT conferences, such as JavaLand, JavaOne, and Jfokus. He won the JavaOne Rockstar award at JavaOne 2016. Together with Java community manager, Steve Chin, he has traveled to dozens of conferences and Java User Groups on motorbike. Steve and Sebastian have launched JOnsen, a Java unconference held at a hot spring in the countryside of Japan.]]>
+            </column>
+            <column name="prezzo" valueNumeric="49.50"/>
+            <column name="aliquota" valueNumeric="10.00"/>
+            <column name="sottotitolo" value="Designing lightweight, business-oriented enterprise applications in the age of cloud, containers, and Java EE 8"/>
+            <column name="nomefile" value="prod006.png"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

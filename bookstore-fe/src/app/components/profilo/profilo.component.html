@@ -1,0 +1,192 @@
+<div class="container mt-4">
+  <!-- Titolo della pagina -->
+  <h2 class="mb-4">Profilo Utente</h2>
+
+  <!-- Messaggi di errore e successo -->
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = null"></button>
+  </div>
+
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = null"></button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && currentUser">
+    <!-- Sezione dati personali -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Dati Personali</h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Nome:</label>
+            <p>{{ currentUser.nome }}</p>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Cognome:</label>
+            <p>{{ currentUser.cognome }}</p>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Email:</label>
+            <p>{{ currentUser.mail }}</p>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Username:</label>
+            <p>{{ currentUser.username }}</p>
+          </div>
+          <div class="col-md-4" *ngIf="currentUser.codiceFiscale">
+            <label class="form-label fw-bold">Codice Fiscale:</label>
+            <p>{{ currentUser.codiceFiscale }}</p>
+          </div>
+          <div class="col-md-4" *ngIf="currentUser.partitaIva">
+            <label class="form-label fw-bold">Partita IVA:</label>
+            <p>{{ currentUser.partitaIva }}</p>
+          </div>
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-outline-primary me-2">Modifica Dati</button>
+          <button class="btn btn-outline-secondary">Cambia Password</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sezione indirizzi -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">I Miei Indirizzi</h5>
+        <button class="btn btn-sm btn-light" (click)="mostraAggiungiIndirizzo()">
+          <i class="bi bi-plus-circle"></i> Aggiungi Indirizzo
+        </button>
+      </div>
+      <div class="card-body">
+        <!-- Tabella indirizzi -->
+        <div class="table-responsive" *ngIf="indirizzi.length > 0">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Indirizzo</th>
+                <th scope="col">CAP</th>
+                <th scope="col">Città</th>
+                <th scope="col">Provincia</th>
+                <th scope="col">Nazione</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let indirizzo of indirizzi; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  <span [ngClass]="{
+                    'badge bg-primary': indirizzo.tipo === 1,
+                    'badge bg-info': indirizzo.tipo === 2,
+                    'badge bg-success': indirizzo.tipo === 3
+                  }">
+                    {{ getTipoIndirizzo(indirizzo.tipo) }}
+                  </span>
+                </td>
+                <td>{{ indirizzo.via }}</td>
+                <td>{{ indirizzo.cap }}</td>
+                <td>{{ indirizzo.citta }}</td>
+                <td>{{ indirizzo.provincia }}</td>
+                <td>{{ indirizzo.nazione }}</td>
+                <td>{{ indirizzo.telefono }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary me-1" (click)="mostraModificaIndirizzo(indirizzo)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="eliminaIndirizzo(indirizzo.idIndirizzo)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Messaggio se non ci sono indirizzi -->
+        <div *ngIf="indirizzi.length === 0" class="text-center py-3">
+          <p class="text-muted">Non hai ancora salvato nessun indirizzo.</p>
+          <button class="btn btn-primary" (click)="mostraAggiungiIndirizzo()">
+            <i class="bi bi-plus-circle"></i> Aggiungi il tuo primo indirizzo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form per aggiungere/modificare indirizzo (implementazione alternativa) -->
+  <div *ngIf="mostraFormIndirizzo" class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 1050;">
+    <!-- Overlay scuro -->
+    <div class="position-fixed top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+    
+    <!-- Dialog del modal -->
+    <div class="position-absolute top-50 start-50 translate-middle bg-white rounded shadow-lg" style="width: 500px; max-width: 95%;">
+      <!-- Header del modal -->
+      <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="m-0">{{ azioneIndirizzo === 'aggiungi' ? 'Aggiungi Indirizzo' : 'Modifica Indirizzo' }}</h5>
+        <button type="button" class="btn-close" (click)="annullaFormIndirizzo()"></button>
+      </div>
+      
+      <!-- Body del modal -->
+      <div class="p-3">
+        <form #indirizzoForm="ngForm">
+          <div class="mb-3">
+            <label for="via" class="form-label">Indirizzo</label>
+            <input type="text" class="form-control" id="via" [(ngModel)]="nuovoIndirizzo.via" name="via" required>
+          </div>
+          <div class="mb-3">
+            <label for="cap" class="form-label">CAP</label>
+            <input type="text" class="form-control" id="cap" [(ngModel)]="nuovoIndirizzo.cap" name="cap" required>
+          </div>
+          <div class="mb-3">
+            <label for="citta" class="form-label">Città</label>
+            <input type="text" class="form-control" id="citta" [(ngModel)]="nuovoIndirizzo.citta" name="citta" required>
+          </div>
+          <div class="mb-3">
+            <label for="provincia" class="form-label">Provincia</label>
+            <input type="text" class="form-control" id="provincia" [(ngModel)]="nuovoIndirizzo.provincia" name="provincia" required>
+          </div>
+          <div class="mb-3">
+            <label for="nazione" class="form-label">Nazione</label>
+            <input type="text" class="form-control" id="nazione" [(ngModel)]="nuovoIndirizzo.nazione" name="nazione" required>
+          </div>
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Telefono</label>
+            <input type="text" class="form-control" id="telefono" [(ngModel)]="nuovoIndirizzo.telefono" name="telefono" required>
+          </div>
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select class="form-select" id="tipo" [(ngModel)]="nuovoIndirizzo.tipo" name="tipo" required>
+              <option [ngValue]="1">Spedizione</option>
+              <option [ngValue]="2">Fatturazione</option>
+              <option [ngValue]="3">Entrambi</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Footer del modal -->
+      <div class="p-3 border-top d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary me-2" (click)="annullaFormIndirizzo()">Annulla</button>
+        <button type="button" class="btn btn-primary" (click)="salvaIndirizzo()">Salva</button>
+      </div>
+    </div>
+  </div>
+</div>

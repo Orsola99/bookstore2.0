@@ -1,0 +1,160 @@
+<div class="container mt-4">
+  <h1 class="text-center">Il tuo carrello</h1>
+  
+  <!-- Messaggio di errore -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Messaggio di successo -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- Contenuto del carrello -->
+  <div *ngIf="!loading">
+    <div *ngIf="dettagli.length > 0">
+      <table class="table table-hover table-light table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center">Nome Prodotto</th>
+            <th class="text-center">Prezzo Unitario</th>
+            <th class="text-center">Imposta</th>
+            <th class="text-center">Quantità</th>
+            <th class="text-center">Totale Riga</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of dettagli; let i = index">
+            <td class="align-middle">{{ item.titoloProdotto }}</td>
+            <td class="align-middle text-end">
+              € {{ item.prezzo.toFixed(2) }}
+            </td>
+            <td class="align-middle text-center">
+              {{ item.aliquota }}%
+            </td>
+            <td class="align-middle text-center">
+              <div class="d-flex align-items-center justify-content-center">
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  style="width: 80px;" 
+                  [value]="item.quantita" 
+                  min="1" 
+                  max="100"
+                  #quantitaInput
+                  (change)="aggiornaQuantita(item, +quantitaInput.value)">
+              </div>
+            </td>
+            <td class="align-middle text-end">
+              € {{ item.totaleRiga.toFixed(2) }}
+            </td>
+            <td class="align-middle text-center">
+              <button 
+                class="btn btn-danger btn-sm" 
+                (click)="rimuoviProdotto(item)">
+                <i class="bi bi-trash"></i> Elimina
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3"></td>
+            <td class="align-middle text-center fw-bold">
+              <h5>Totale</h5>
+            </td>
+            <td class="align-middle text-end">
+              <h5>€ {{ totale.toFixed(2) }}</h5>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <button 
+            class="btn btn-outline-danger" 
+            (click)="svuotaCarrello()">
+            <i class="bi bi-cart-x"></i> Svuota carrello
+          </button>
+        </div>
+        <div class="col-md-6 text-end">
+          <button 
+            class="btn btn-primary btn-lg" 
+            (click)="procediAllOrdine()">
+            <i class="bi bi-check2-circle"></i> Procedi all'ordine
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carrello vuoto -->
+    <div *ngIf="dettagli.length === 0" class="text-center mt-5">
+      <p>Il tuo carrello è vuoto.</p>
+      <a routerLink="/prodotti" class="btn btn-primary mt-3">
+        <i class="bi bi-shop"></i> Continua lo shopping
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modale per la selezione degli indirizzi -->
+<div *ngIf="mostraModalOrdine" class="modal d-block" tabindex="-1" role="dialog" aria-labelledby="modalOrdineLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalOrdineLabel">Completa l'ordine</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="annullaOrdine()" [disabled]="creazioneOrdineInCorso"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="creazioneOrdineInCorso" class="text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Creazione ordine in corso...</span>
+          </div>
+          <p class="mt-2">Creazione ordine in corso...</p>
+        </div>
+        
+        <div *ngIf="!creazioneOrdineInCorso">
+          <p>Seleziona gli indirizzi per completare l'ordine:</p>
+          
+          <div class="mb-3">
+            <label for="indirizzoSpedizione" class="form-label">Indirizzo di spedizione</label>
+            <select class="form-select" id="indirizzoSpedizione" [(ngModel)]="indirizzoSpedizioneId">
+              <option *ngFor="let indirizzo of indirizzi" [value]="indirizzo.idIndirizzo">
+                {{ indirizzo.via }}, {{ indirizzo.cap }} {{ indirizzo.citta }} ({{ indirizzo.provincia }}) - {{ getTipoIndirizzo(indirizzo.tipo) }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label for="indirizzoFatturazione" class="form-label">Indirizzo di fatturazione</label>
+            <select class="form-select" id="indirizzoFatturazione" [(ngModel)]="indirizzoFatturazioneId">
+              <option *ngFor="let indirizzo of indirizzi" [value]="indirizzo.idIndirizzo">
+                {{ indirizzo.via }}, {{ indirizzo.cap }} {{ indirizzo.citta }} ({{ indirizzo.provincia }}) - {{ getTipoIndirizzo(indirizzo.tipo) }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="alert alert-info">
+            <p class="mb-0"><strong>Totale ordine:</strong> € {{ totale.toFixed(2) }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="annullaOrdine()" [disabled]="creazioneOrdineInCorso">Annulla</button>
+        <button type="button" class="btn btn-primary" (click)="confermaOrdine()" [disabled]="creazioneOrdineInCorso || !indirizzoSpedizioneId || !indirizzoFatturazioneId">Conferma ordine</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay scuro per il modale -->
+<div *ngIf="mostraModalOrdine" class="modal-backdrop fade show"></div>

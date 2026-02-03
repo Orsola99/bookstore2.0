@@ -1,0 +1,97 @@
+<div class="container mt-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/prodotti">Prodotti</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Dettaglio prodotto</li>
+    </ol>
+  </nav>
+
+  <!-- Messaggio di errore -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Messaggio di successo -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Caricamento...</span>
+    </div>
+  </div>
+
+  <!-- Dettaglio prodotto -->
+  <div *ngIf="!loading && prodotto" class="row">
+    <div class="col-md-5">
+      <div class="card mb-4">
+        <!-- Utilizziamo un percorso assoluto per le immagini -->
+        <img 
+          [src]="'/assets/images/' + prodotto.nomeFile" 
+          class="card-img-top img-fluid" 
+          [alt]="prodotto.titolo"
+          style="max-height: 400px; object-fit: contain; padding: 20px;">
+        <div 
+          *ngIf="!prodotto.nomeFile" 
+          class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+          style="height: 400px;">
+          <i class="bi bi-book" style="font-size: 5rem;"></i>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <h2 class="mb-3">{{ prodotto.titolo }}</h2>
+      <h6 class="text-muted mb-4">{{ prodotto.sottotitolo }}</h6>
+      
+      <div class="mb-4">
+        <h3 class="text-primary">€{{ prodotto.prezzo.toFixed(2) }}</h3>
+        <p class="text-muted"><small>*IVA esclusa</small></p>
+      </div>
+      
+      <div class="mb-4">
+        <h5>Descrizione</h5>
+        <p>{{ prodotto.descrizione || 'Nessuna descrizione disponibile.' }}</p>
+      </div>
+      
+      <div class="mb-4">
+        <h5>Quantità</h5>
+        <div class="input-group" style="max-width: 150px;">
+          <button class="btn btn-outline-secondary" type="button" (click)="decrementaQuantita()">
+            <i class="bi bi-dash"></i>
+          </button>
+          <input type="number" class="form-control text-center" [(ngModel)]="quantita" min="1">
+          <button class="btn btn-outline-secondary" type="button" (click)="incrementaQuantita()">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="d-grid gap-2 d-md-block">
+        <button 
+          class="btn btn-primary btn-lg me-md-2" 
+          [disabled]="addingToCart" 
+          (click)="aggiungiAlCarrello()">
+          <i class="bi bi-cart-plus me-2"></i>
+          {{ addingToCart ? 'Aggiunta in corso...' : 'Aggiungi al carrello' }}
+        </button>
+        <button class="btn btn-outline-secondary btn-lg" (click)="tornaAiProdotti()">
+          <i class="bi bi-arrow-left me-2"></i>
+          Torna ai prodotti
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prodotto non trovato -->
+  <div *ngIf="!loading && !prodotto && !error" class="text-center mt-5">
+    <p>Prodotto non trovato.</p>
+    <button class="btn btn-primary" (click)="tornaAiProdotti()">
+      <i class="bi bi-arrow-left me-2"></i>
+      Torna ai prodotti
+    </button>
+  </div>
+</div>

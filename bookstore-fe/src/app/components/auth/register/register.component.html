@@ -1,0 +1,142 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h4 class="mb-0">Crea un nuovo account</h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Messaggio di errore -->
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+          </div>
+
+          <!-- Messaggio di successo -->
+          <div *ngIf="success" class="alert alert-success">
+            Registrazione completata con successo! Verrai reindirizzato alla pagina di login...
+          </div>
+
+          <form (ngSubmit)="onSubmit()" #registerForm="ngForm" *ngIf="!success">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="nome" 
+                  name="nome"
+                  [(ngModel)]="utente.nome"
+                  required
+                  #nomeInput="ngModel">
+                <div *ngIf="nomeInput.invalid && (nomeInput.dirty || nomeInput.touched)" class="text-danger mt-1">
+                  <small *ngIf="nomeInput.errors?.['required']">Nome obbligatorio</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="cognome" class="form-label">Cognome</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="cognome" 
+                  name="cognome"
+                  [(ngModel)]="utente.cognome"
+                  required
+                  #cognomeInput="ngModel">
+                <div *ngIf="cognomeInput.invalid && (cognomeInput.dirty || cognomeInput.touched)" class="text-danger mt-1">
+                  <small *ngIf="cognomeInput.errors?.['required']">Cognome obbligatorio</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="mail" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="mail" 
+                name="mail"
+                [(ngModel)]="utente.mail"
+                required
+                email
+                #mailInput="ngModel">
+              <div *ngIf="mailInput.invalid && (mailInput.dirty || mailInput.touched)" class="text-danger mt-1">
+                <small *ngIf="mailInput.errors?.['required']">Email obbligatoria</small>
+                <small *ngIf="mailInput.errors?.['email']">Inserisci un indirizzo email valido</small>
+              </div>
+            </div>
+
+            <!-- Rimosso campo telefono poiché non presente nel modello backend -->
+
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                name="username"
+                [(ngModel)]="utente.username"
+                required
+                minlength="4"
+                #usernameInput="ngModel">
+              <div *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="text-danger mt-1">
+                <small *ngIf="usernameInput.errors?.['required']">Username obbligatorio</small>
+                <small *ngIf="usernameInput.errors?.['minlength']">Username deve essere di almeno 4 caratteri</small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="userPass" class="form-label">Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="userPass" 
+                  name="userPass"
+                  [(ngModel)]="utente.userPass"
+                  required
+                  minlength="6"
+                  #passwordInput="ngModel">
+                <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger mt-1">
+                  <small *ngIf="passwordInput.errors?.['required']">Password obbligatoria</small>
+                  <small *ngIf="passwordInput.errors?.['minlength']">Password deve essere di almeno 6 caratteri</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="confirmPassword" class="form-label">Conferma Password</label>
+                <input 
+                  type="password" 
+                  class="form-control" 
+                  id="confirmPassword" 
+                  name="confirmPassword"
+                  [(ngModel)]="confirmPassword"
+                  required
+                  #confirmPasswordInput="ngModel">
+                <div *ngIf="confirmPasswordInput.invalid && (confirmPasswordInput.dirty || confirmPasswordInput.touched)" class="text-danger mt-1">
+                  <small *ngIf="confirmPasswordInput.errors?.['required']">Conferma password obbligatoria</small>
+                </div>
+                <div *ngIf="confirmPassword && utente.userPass !== confirmPassword && confirmPasswordInput.dirty" class="text-danger mt-1">
+                  <small>Le password non coincidono</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                [disabled]="registerForm.invalid || loading || (confirmPassword && utente.userPass !== confirmPassword)">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Registrati
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <p class="mb-0">Hai già un account? <a routerLink="/login">Accedi</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
